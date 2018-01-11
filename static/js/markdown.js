@@ -342,6 +342,18 @@ $(function () {
                         openEditCatalogDialog(node);
                     }
                 },
+                "复制": {
+                    "separator_before": false,
+                    "separator_after": true,
+                    "_disabled": false,
+                    "label": "复制",
+                    "icon": "fa fa-copy",
+                    "action": function (data) {
+                        var inst = $.jstree.reference(data.reference);
+                        var node = inst.get_node(data.reference);
+                        openCopyCatalogDialog(node);
+                    }
+                },
                 "删除": {
                     "separator_before": false,
                     "separator_after": true,
