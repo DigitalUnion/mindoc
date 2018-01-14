@@ -122,18 +122,16 @@ function openEditCatalogDialog($node) {
  * @param $node
  */
 function openCopyCatalogDialog($node) {
-    var $then =  $("#addDocumentModal");
-    $then.find("#myModalLabel").text('复制文档');
-    $then.find('form').attr('action','/api/mindoc/copy');
-    
+    var $then =  $("#copyDocumentModal");
     var doc_id = parseInt($node ? $node.id : 0);
     var text = $node ? $node.text : '';
     var parentId = $node && $node.parent !== '#' ? $node.parent : 0;
 
     $then.find("input[name='doc_id']").val(doc_id);
     $then.find("input[name='parent_id']").val(parentId);
-    $then.find("input[name='doc_name']").val(text+"_副本");
-
+    $then.find("input[name='doc_identify']").val('');
+    $then.find("input[name='doc_name']").val(text + "_副本");
+    $then.find('#copy-error-message').text('');
     $then.modal({ show : true });
 }
 

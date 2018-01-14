@@ -411,7 +411,6 @@ func (c *DocumentController) Create() {
 // 复制一个文档节点
 func (c *DocumentController) Copy() {
 	c.Prepare()
-	
 	identify := c.GetString("identify")
 	doc_identify := c.GetString("doc_identify")
 	doc_name := c.GetString("doc_name")
@@ -419,6 +418,10 @@ func (c *DocumentController) Copy() {
 	doc_id, _ := c.GetInt("doc_id")
 
 	if identify == "" {
+		c.JsonResult(6001, "参数错误")
+	}
+
+	if doc_id <= 0 {
 		c.JsonResult(6001, "参数错误")
 	}
 
@@ -432,13 +435,9 @@ func (c *DocumentController) Copy() {
 		}
 
 		d, _ := models.NewDocument().FindByFieldFirst("identify", doc_identify)
-		if d.DocumentId > 0 && d.DocumentId != doc_id {
+		if d.DocumentId > 0  {
 			c.JsonResult(6006, "文档标识已被使用")
 		}
-	}
-
-	if doc_id <= 0 {
-		c.JsonResult(6001, "参数错误")
 	}
 
 	// 查询被复制节点的信息
@@ -472,18 +471,12 @@ func (c *DocumentController) Copy() {
 	dest_doc.BookId = book_id
 	dest_doc.Markdown = src_doc.Markdown
 	dest_doc.Content = src_doc.Content
-
-	if doc_identify != "" {
-		dest_doc.Identify = doc_identify
-	}
-
 	dest_doc.Version = time.Now().Unix()
 	dest_doc.DocumentName = doc_name
 	dest_doc.ParentId = src_doc.ParentId
-	attach, err := models.NewAttachment().FindListByDocumentId(doc_id)
 
-	if err == nil {
-		dest_doc.AttachList = attach
+	if doc_identify != "" {
+		dest_doc.Identify = doc_identify
 	}
 
 	if err := dest_doc.InsertOrUpdate(); err != nil {
