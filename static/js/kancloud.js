@@ -135,12 +135,29 @@ $(function () {
 
     // 处理打开事件
     events.on('article.open', function (event, $param) {
+        // 上一篇文档浏览记录
+        var prevState = history.state || {};
         if ('pushState' in history) {
-            if ($param.$init === false) {
-                window.history.replaceState($param, $param.$id, $param.$url);
-            } else {
-                window.history.pushState($param, $param.$id, $param.$url);
-            }
+            /**
+             * 原有逻辑，下次迭代删除
+             * 首次加载的文档 pushState
+             * 非首次次加载的文档 replaceState
+             * 会造成浏览历史回退时遇到非首次加载的文档一直用相同的记录替换上一个浏览历史，无法回退
+             */
+            // if ($param.$init === false) {
+            //     window.history.replaceState($param, $param.$id, $param.$url);
+            // } else {
+            //     window.history.pushState($param, $param.$id, $param.$url);
+            // }
+
+            /**
+             * 修改后逻辑
+             * 判定当前加载文档是否是上一篇文档
+             * 如果是则忽略
+             * 如果不是则记录浏览历史
+             */
+            prevState.$id === $param.$id || window.history.pushState($param, $param.$id, $param.$url);
+
         } else {
             window.location.hash = $param.$url;
         }
@@ -192,12 +209,13 @@ $(function () {
     window.onpopstate = function (e) {
         var $param = e.state;
         console.log($param);
-        if($param.hasOwnProperty("$url")) {
+        // 避免无浏览历史（$param 为 null）时出错的问题
+        if ($param && $param.hasOwnProperty("$url")) {
             window.jsTree.jstree().deselect_all();
 
             window.jsTree.jstree().select_node({ id : $param.$id });
-            $param.$init = false;
-            // events.trigger('article.open', $param);
+            // 此处对 $init 修改无效，暂且取消，下次迭代删除
+            // $param.$init = false;
         } else {
             console.log($param);
         }
