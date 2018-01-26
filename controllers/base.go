@@ -84,6 +84,7 @@ func (c *BaseController) JsonResult(errCode int,errMsg string,data ...interface{
 	}
 
 	c.Ctx.ResponseWriter.Header().Set("Content-Type", "application/json; charset=utf-8")
+	c.Ctx.ResponseWriter.Header().Set("Cache-Control", "no-cache, no-store")
 
 	io.WriteString(c.Ctx.ResponseWriter,string(returnJSON))
 
