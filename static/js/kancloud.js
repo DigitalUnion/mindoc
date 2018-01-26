@@ -227,8 +227,8 @@ $(function () {
         var $node = window.jsTree.jstree().get_selected();
         if (typeof $node === "object") {
             $node = window.jsTree.jstree().get_node({ id: $node[0] });
-            // events.trigger('article.open', { $url: $node.a_attr.href, $init: true, $id: $node.a_attr.id });
-            events.trigger('article.open', { $url: $node.a_attr.href, $id: $node.a_attr.id });
+            // 为统一 history 记录 ID，用 $node.id 替换 $node.a_attr.id，
+            events.trigger('article.open', { $url: $node.a_attr.href, $id: $node.id });
         }
     } catch (e) {
         console.log(e);
