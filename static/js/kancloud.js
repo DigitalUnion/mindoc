@@ -14,7 +14,8 @@ function loadDocument($url, $id, $callback) {
             var doc_title = events.data('doc_title_' + $id);
             var doc_info = events.data('doc_info_' + $id);
 
-            if (body && title && doc_title) {
+            // 获取缓存结果时增加对 doc_info 的判断
+            if (body && title && doc_title && doc_info) {
                 if (typeof $callback === "function") {
                     body = $callback(body);
                 }
