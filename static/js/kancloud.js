@@ -24,7 +24,8 @@ function loadDocument($url, $id, $callback) {
                 $("#article-title").text(doc_title);
                 $("#article-info").text(doc_info);
 
-                events.trigger('article.open', { $url : $url, $init : false, $id : $id });
+                // events.trigger('article.open', { $url : $url, $init : false, $id : $id });
+                events.trigger('article.open', { $url : $url, $id : $id });
 
                 return false;
             }
@@ -52,7 +53,8 @@ function loadDocument($url, $id, $callback) {
                 events.data('doc_title_' + $id, doc_title);
                 events.data('doc_info_' + $id, doc_info);
 
-                events.trigger('article.open', { $url : $url, $init : true, $id : $id });
+                // events.trigger('article.open', { $url : $url, $init : true, $id : $id });
+                events.trigger('article.open', { $url : $url, $id : $id });
             } else if (res.errcode === 6000) {
                 window.location.href = "/";
             } else {
@@ -224,7 +226,8 @@ $(function () {
         var $node = window.jsTree.jstree().get_selected();
         if (typeof $node === "object") {
             $node = window.jsTree.jstree().get_node({ id: $node[0] });
-            events.trigger('article.open', { $url: $node.a_attr.href, $init: true, $id: $node.a_attr.id });
+            // events.trigger('article.open', { $url: $node.a_attr.href, $init: true, $id: $node.a_attr.id });
+            events.trigger('article.open', { $url: $node.a_attr.href, $id: $node.a_attr.id });
         }
     } catch (e) {
         console.log(e);
