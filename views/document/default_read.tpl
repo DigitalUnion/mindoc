@@ -49,7 +49,7 @@
                         {{if gt .Member.MemberId 0}}
                         {{if gt .Model.RelationshipId 0}}
                         {{if eq .Model.RoleId 0 1 2}}
-                        <li><a href="{{urlfor "DocumentController.Edit" ":key" .Model.Identify ":id" ""}}">返回编辑</a> </li>
+                        <li><a href="javascript: void 0;" onclick="EditDoc()">返回编辑</a> </li>
                         {{end}}
                         {{end}}
                         <li><a href="{{urlfor "BookController.Index"}}">我的项目</a> </li>
@@ -260,6 +260,10 @@ function ExportPdfDoc() {
     if(active_doc_id != "0")
         id += "/" + active_doc_id;
     window.location.href = "/export/" + id + "?output=pdf";
+}
+function EditDoc () {
+    var id = window.location.pathname.replace('/docs/' + active_book_id, '').replace(/\//g, '');
+    window.location.assign('/api/' + active_book_id + '/edit/' + id);
 }
 </script>
 </body>
