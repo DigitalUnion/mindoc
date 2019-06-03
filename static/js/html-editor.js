@@ -266,6 +266,15 @@ $(function () {
         }
     }).on('loaded.jstree', function () {
         window.treeCatalog = $(this).jstree();
+        var id = location.pathname.split('/').pop();
+        if (!id) return;
+        window.documentCategory.forEach(function (item) {
+            if (item.identify && item.identify === id) {
+                id = item.id;
+            }
+        });
+        window.treeCatalog.deselect_all();
+        window.treeCatalog.select_node(id);
     }).on('select_node.jstree', function (node, selected, event) {
         if(window.editor.menus.save.$domNormal.hasClass('selected')) {
             if(confirm("编辑内容未保存，需要保存吗？")){
@@ -275,6 +284,8 @@ $(function () {
                 return true;
             }
         }
+        var id = selected.node.original.identify || selected.node.id;
+        window.history.replaceState(null, document.title, '/api/' + book.identify + '/edit/' + id === '0' ? '' : id);
         loadDocument(selected);
 
     }).on("move_node.jstree", jstree_save);

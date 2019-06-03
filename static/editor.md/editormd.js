@@ -2119,7 +2119,7 @@
          */
         
         setCursor : function(cursor) {
-            this.cm.setCursor(cursor);
+            this.cm && this.cm.setCursor(cursor);
 
             return this;
         },
@@ -2196,7 +2196,7 @@
          */
         
         replaceSelection : function(value) {
-            this.cm.replaceSelection(value);
+            this.cm && this.cm.replaceSelection(value);
 
             return this;
         },
@@ -2293,7 +2293,7 @@
          */
         
         clear : function() {
-            this.cm.setValue("");
+            this.cm && this.cm.setValue("");
             
             return this;
         },
